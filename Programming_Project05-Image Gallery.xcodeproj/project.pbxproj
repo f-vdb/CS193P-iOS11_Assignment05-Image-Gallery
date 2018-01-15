@@ -7,17 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA5764AE200A293D00FBC363 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5764AD200A293D00FBC363 /* Utilities.swift */; };
+		EA5764B0200A32DB00FBC363 /* ImageGalleryDocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5764AF200A32DB00FBC363 /* ImageGalleryDocumentTableViewController.swift */; };
+		EA5764B2200A33A300FBC363 /* ImageGalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5764B1200A33A300FBC363 /* ImageGalleryCollectionViewController.swift */; };
+		EA5764B4200A360100FBC363 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5764B3200A360100FBC363 /* ImageViewController.swift */; };
+		EA8B7AE3200B9B6A00E011D8 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B7AE2200B9B6A00E011D8 /* ImageCollectionViewCell.swift */; };
+		EA8EE078200CEBC600FAE162 /* ImageGalleryDocumentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8EE077200CEBC600FAE162 /* ImageGalleryDocumentTableViewCell.swift */; };
 		EA9CFB2D200A240500A9F769 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9CFB2C200A240500A9F769 /* AppDelegate.swift */; };
-		EA9CFB2F200A240500A9F769 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9CFB2E200A240500A9F769 /* ViewController.swift */; };
 		EA9CFB32200A240600A9F769 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA9CFB30200A240600A9F769 /* Main.storyboard */; };
 		EA9CFB34200A240600A9F769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA9CFB33200A240600A9F769 /* Assets.xcassets */; };
 		EA9CFB37200A240600A9F769 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA9CFB35200A240600A9F769 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA5764AD200A293D00FBC363 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		EA5764AF200A32DB00FBC363 /* ImageGalleryDocumentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryDocumentTableViewController.swift; sourceTree = "<group>"; };
+		EA5764B1200A33A300FBC363 /* ImageGalleryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryCollectionViewController.swift; sourceTree = "<group>"; };
+		EA5764B3200A360100FBC363 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		EA8B7AE2200B9B6A00E011D8 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		EA8EE077200CEBC600FAE162 /* ImageGalleryDocumentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryDocumentTableViewCell.swift; sourceTree = "<group>"; };
 		EA9CFB29200A240500A9F769 /* Programming_Project05-Image Gallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Programming_Project05-Image Gallery.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA9CFB2C200A240500A9F769 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EA9CFB2E200A240500A9F769 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EA9CFB31200A240600A9F769 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA9CFB33200A240600A9F769 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA9CFB36200A240600A9F769 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -35,6 +45,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA5764AC200A24E500FBC363 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EA9CFB2C200A240500A9F769 /* AppDelegate.swift */,
+				EA9CFB33200A240600A9F769 /* Assets.xcassets */,
+				EA9CFB35200A240600A9F769 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		EA9CFB20200A240500A9F769 = {
 			isa = PBXGroup;
 			children = (
@@ -54,11 +74,14 @@
 		EA9CFB2B200A240500A9F769 /* Programming_Project05-Image Gallery */ = {
 			isa = PBXGroup;
 			children = (
-				EA9CFB2C200A240500A9F769 /* AppDelegate.swift */,
-				EA9CFB2E200A240500A9F769 /* ViewController.swift */,
 				EA9CFB30200A240600A9F769 /* Main.storyboard */,
-				EA9CFB33200A240600A9F769 /* Assets.xcassets */,
-				EA9CFB35200A240600A9F769 /* LaunchScreen.storyboard */,
+				EA5764AF200A32DB00FBC363 /* ImageGalleryDocumentTableViewController.swift */,
+				EA8EE077200CEBC600FAE162 /* ImageGalleryDocumentTableViewCell.swift */,
+				EA5764B1200A33A300FBC363 /* ImageGalleryCollectionViewController.swift */,
+				EA8B7AE2200B9B6A00E011D8 /* ImageCollectionViewCell.swift */,
+				EA5764B3200A360100FBC363 /* ImageViewController.swift */,
+				EA5764AC200A24E500FBC363 /* Supporting Files */,
+				EA5764AD200A293D00FBC363 /* Utilities.swift */,
 				EA9CFB38200A240600A9F769 /* Info.plist */,
 			);
 			path = "Programming_Project05-Image Gallery";
@@ -136,8 +159,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA9CFB2F200A240500A9F769 /* ViewController.swift in Sources */,
+				EA8B7AE3200B9B6A00E011D8 /* ImageCollectionViewCell.swift in Sources */,
+				EA8EE078200CEBC600FAE162 /* ImageGalleryDocumentTableViewCell.swift in Sources */,
+				EA5764B0200A32DB00FBC363 /* ImageGalleryDocumentTableViewController.swift in Sources */,
+				EA5764AE200A293D00FBC363 /* Utilities.swift in Sources */,
+				EA5764B4200A360100FBC363 /* ImageViewController.swift in Sources */,
 				EA9CFB2D200A240500A9F769 /* AppDelegate.swift in Sources */,
+				EA5764B2200A33A300FBC363 /* ImageGalleryCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
