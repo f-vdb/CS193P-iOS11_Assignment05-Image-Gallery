@@ -23,8 +23,8 @@ protocol DataForImageGallery: class {
     var imageGallery: ImageGallery! { get set }
 }
 
-class ImageGalleryDocumentTableViewController: UITableViewController {
-    
+class ImageGalleryDocumentTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
+{
     // MARK: - Model
     var activeImageGalleries: [ImageGallery] = {
         var imageGalleries: [ImageGallery] = []
@@ -41,6 +41,13 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
     var imageGalleries: [[ImageGallery]]  {
         return [activeImageGalleries, recentlyDeletedImageGalleries]
     }
+    
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.delegate = self
+            tableView.dataSource = self
+        }
+    }
 
     @IBAction func addGallery(_ sender: UIBarButtonItem) {
         let newGallery = ImageGallery()
@@ -51,27 +58,35 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if splitViewController?.preferredDisplayMode != .primaryOverlay {
-            splitViewController?.preferredDisplayMode = .primaryOverlay
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let indexPath = IndexPath(row: 0, section: 0)
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition(rawValue: 0)!)
+        splitViewController?.delegate = self
+        
+        for vc in splitViewController?.viewControllers ?? [] {
+            if let vcc = vc.contents as? DataForImageGallery {
+                vcc.imageGallery = activeImageGalleries[0]
+                print("transfered data")
+                break
+            }
         }
     }
     
     // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return imageGalleries.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return imageGalleries[section].count
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 1 ? "Recently Deleted" : ""
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageGalleryNameCell", for: indexPath)
         if let cell = cell as? ImageGalleryDocumentTableViewCell {
             cell.textField.text = imageGalleries[indexPath.section][indexPath.row].name
@@ -80,7 +95,7 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
     }
     
     // MARK: - Table View delegate methods
-    override func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         if let cell = tableView.cellForRow(at: indexPath) as? ImageGalleryDocumentTableViewCell {
             cell.textField?.resignFirstResponder()
             cell.textField?.isUserInteractionEnabled = false
@@ -90,11 +105,11 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
   
     // MARK: Editing of TableView (rows) ...
     // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard indexPath.section == 1 else { return nil }
         let reStoreAction = UIContextualAction(style: .destructive, title: "Restore") { [weak self] (action: UIContextualAction, view: UIView, closure: (Bool)->Void) in
             if let imageGallery = self?.imageGalleries[indexPath.section][indexPath.row] {
@@ -109,7 +124,7 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
     }
 
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if indexPath.section == 0 {
                 let imageGallery = imageGalleries[indexPath.section][indexPath.row]
@@ -124,10 +139,11 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
     }
     
     // TODO: - implement reordening of rows.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
     }
+    
     // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -152,9 +168,25 @@ class ImageGalleryDocumentTableViewController: UITableViewController {
     }
 }
 
-
-
-
+extension ImageGalleryDocumentTableViewController: UISplitViewControllerDelegate {
+//  iPhone??
+    
+//    func splitViewController(
+//        _ splitViewController: UISplitViewController,
+//        collapseSecondary secondaryViewController: UIViewController,
+//        onto primaryViewController: UIViewController) -> Bool
+//    {
+//        return true
+//    }
+    
+    func targetDisplayModeForAction(in svc: UISplitViewController) -> UISplitViewControllerDisplayMode {
+        switch svc.displayMode {
+        case .allVisible: return .primaryHidden
+        case .primaryHidden: return .allVisible
+        default: return .primaryOverlay
+        }
+    }
+}
 
 
 

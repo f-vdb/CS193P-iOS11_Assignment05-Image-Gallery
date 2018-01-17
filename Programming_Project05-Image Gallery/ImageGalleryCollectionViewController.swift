@@ -45,7 +45,12 @@ class ImageGalleryCollectionViewController: UIViewController, DataForImageGaller
     }
     
     override func viewDidLoad() {
-        navigationItem.title = "Image Gallery: " + (imageGallery?.name ?? " undefined")
+        if imageGallery == nil {
+            imageGallery = ImageGallery()
+        }
+        navigationItem.title = "Image Gallery: " + (imageGallery?.name ?? " undefined")        
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        navigationItem.leftItemsSupplementBackButton = true
     }
     
     // MARK: - Navigation
