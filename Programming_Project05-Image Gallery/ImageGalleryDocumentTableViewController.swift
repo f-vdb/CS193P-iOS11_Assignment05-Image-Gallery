@@ -11,16 +11,29 @@ import UIKit
 class ImageGallery {
     var name: String = ""
     
-    struct ImageData {
+    struct ImageData: Equatable, Hashable {
         var url: URL?
-        var image: UIImage?
-        var aspectRatio: CGFloat = 1
+        weak var image: UIImage?
+        var aspectRatio: CGFloat {
+            return image != nil ? image!.size.width / image!.size.height : 1
+        }
+        
+        let hashValue: Int = {
+            identifierFactory += 1
+            return identifierFactory
+        }()
+        
+        static func ==(lhs: ImageGallery.ImageData, rhs: ImageGallery.ImageData) -> Bool {
+            return lhs.hashValue == rhs.hashValue
+        }
     }
     var images: [ImageData] = []
+    
+    private static var identifierFactory = 0
 }
 
 protocol DataForImageGallery: class {
-    var imageGallery: ImageGallery! { get set }
+    weak var imageGallery: ImageGallery! { get  set }
 }
 
 class ImageGalleryDocumentTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
@@ -65,9 +78,8 @@ class ImageGalleryDocumentTableViewController: UIViewController, UITableViewDele
         splitViewController?.delegate = self
         
         for vc in splitViewController?.viewControllers ?? [] {
-            if let vcc = vc.contents as? DataForImageGallery {
-                vcc.imageGallery = activeImageGalleries[0]
-                print("transfered data")
+            if let secondaryVC = vc.contents as? DataForImageGallery {
+                secondaryVC.imageGallery = activeImageGalleries[0]
                 break
             }
         }
@@ -83,7 +95,7 @@ class ImageGalleryDocumentTableViewController: UIViewController, UITableViewDele
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 1 ? "Recently Deleted" : ""
+        return section == 1 ? "Recently Deleted" : nil
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -111,16 +123,16 @@ class ImageGalleryDocumentTableViewController: UIViewController, UITableViewDele
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard indexPath.section == 1 else { return nil }
-        let reStoreAction = UIContextualAction(style: .destructive, title: "Restore") { [weak self] (action: UIContextualAction, view: UIView, closure: (Bool)->Void) in
+        let restoreAction = UIContextualAction(style: .destructive, title: "Restore") { [weak self] (action: UIContextualAction, view: UIView, closure: (Bool)->Void) in
             if let imageGallery = self?.imageGalleries[indexPath.section][indexPath.row] {
                 self?.recentlyDeletedImageGalleries.remove(at: indexPath.row)
                 self?.activeImageGalleries.insert(imageGallery, at: 0)
-                self?.tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
-                self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+                tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
+                tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
             }
         }
-        reStoreAction.backgroundColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
-        return UISwipeActionsConfiguration(actions: [reStoreAction])
+        restoreAction.backgroundColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1)
+        return UISwipeActionsConfiguration(actions: [restoreAction])
     }
 
     // Override to support editing the table view.
@@ -184,6 +196,13 @@ extension ImageGalleryDocumentTableViewController: UISplitViewControllerDelegate
         case .allVisible: return .primaryHidden
         case .primaryHidden: return .allVisible
         default: return .primaryOverlay
+        }
+    }
+    
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+        if let indexPath = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: indexPath) as? ImageGalleryDocumentTableViewCell {
+            cell.textField?.resignFirstResponder()
+            cell.textField?.isUserInteractionEnabled = false
         }
     }
 }

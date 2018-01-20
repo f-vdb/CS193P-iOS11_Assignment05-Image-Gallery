@@ -67,6 +67,33 @@ class ImageFetcher
 	}
 }
 
+
+// cache...
+class Cache: NSCache<NSURL, UIImage> {
+    subscript(key: URL) -> UIImage? {
+        get {
+            return object(forKey: key as NSURL)
+        }
+        set {
+            if let value: UIImage = newValue {
+                setObject(value, forKey: key as NSURL)
+                keys.insert(key)
+            } else {
+                removeObject(forKey: key as NSURL)
+                keys.remove(key)
+            }
+        }
+    }
+    
+    private var keys: Set<URL> = []
+}
+
+
+extension UINavigationBar {
+    
+}
+
+
 extension URL {
 	var imageURL: URL {
 		if let url = UIImage.urlToStoreLocallyAsJPEG(named: self.path) {

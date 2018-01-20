@@ -34,7 +34,9 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     var imageView = UIImageView()
     
     override func viewDidLoad() {
-        image = transferedImage != nil ? transferedImage : UIImage(named: "1.png")
+        image = transferedImage
+        navigationItem.rightBarButtonItem = splitViewController?.displayModeButtonItem
+        navigationItem.leftItemsSupplementBackButton = true
     }
     
     // MARK: - Outlets!! ScrollView Layout Constraints for width and heigth
